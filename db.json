@@ -1,0 +1,59 @@
+{
+  "events": [
+    {
+      "id": "0",
+      "name": "Jake's secret party",
+      "dates": [
+        "2014-01-01",
+        "2014-01-05",
+        "2014-01-12"
+      ],
+      "votes": [
+        {
+          "date": "2014-01-01",
+          "people": [
+            "John",
+            "Julia",
+            "Paul",
+            "Daisy"
+          ]
+        },
+        {
+          "date": "2014-01-05",
+          "people": [
+            "John"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "1",
+      "name": "MM-kyykkä",
+      "dates": [
+        "2021-02-01",
+        "2022-02-05",
+        "2023-01-12"
+      ],
+      "votes": [
+        {
+          "date": "2021-02-01",
+          "people": [
+            "John",
+            "Julia",
+            "Paul",
+            "Daisy"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "name": "Maken bileet",
+      "dates": [
+        "2020-10-11",
+        "2020-11-11"
+      ],
+      "votes": []
+    }
+  ]
+}

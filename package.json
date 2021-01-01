@@ -1,0 +1,25 @@
+{
+  "name": "eventshuffle",
+  "version": "1.0.0",
+  "description": "Event scheduling application backend",
+  "main": "index.js",
+  "scripts": {
+    "test": "test",
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github.com/JokisAtte/eventsuhffle"
+  },
+  "author": "Atte Jokinen",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "lowdb": "^1.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.6"
+  }
+}
