@@ -2,9 +2,10 @@ POST http://localhost:3001/api/v1/event/
 Content-Type: application/json
 
 {
-    "name":"Maken bileet",
+    "name":"perse",
     "dates": [
         "2020-10-11",
-        "2020-11-11"
+        "2020-11-11",
+        "2020-01-12"
     ]
 }

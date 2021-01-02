@@ -28,32 +28,55 @@
     },
     {
       "id": "1",
-      "name": "MM-kyykkä",
+      "name": "paska keittopäivät",
       "dates": [
-        "2021-02-01",
-        "2022-02-05",
-        "2023-01-12"
+        "2020-10-11",
+        "2020-11-11",
+        "2020-01-12"
       ],
       "votes": [
         {
-          "date": "2021-02-01",
+          "date": "2020-10-11",
           "people": [
+            "Daisy",
             "John",
-            "Julia",
-            "Paul",
-            "Daisy"
+            "Dick Richard"
           ]
+        },
+        {
+          "date": "2020-11-11",
+          "people": [
+            "Dick Richard"
+          ]
+        },
+        {
+          "date": "2020-01-12",
+          "people": []
         }
       ]
     },
     {
       "id": "2",
-      "name": "Maken bileet",
+      "name": "perse",
       "dates": [
         "2020-10-11",
-        "2020-11-11"
+        "2020-11-11",
+        "2020-01-12"
       ],
-      "votes": []
+      "votes": [
+        {
+          "date": "2020-10-11",
+          "people": []
+        },
+        {
+          "date": "2020-11-11",
+          "people": []
+        },
+        {
+          "date": "2020-01-12",
+          "people": []
+        }
+      ]
     }
   ]
 }
