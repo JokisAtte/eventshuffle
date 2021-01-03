@@ -10,15 +10,10 @@ const db = low(adapter)
 
 eventRouter.get("/event/list", (request, response) => {
   const events = db.get("events").value()
-  let simplifiedEvents = []
-  for (let i = 0; i < events.length; i++) {
-    const { id, name } = events[i]
-    const event = {
-      id,
-      name,
-    }
-    simplifiedEvents.push(event)
-  }
+  const simplifiedEvents = events.map(({ id, name }) => ({
+    id,
+    name,
+  }))
   response.json({ events: simplifiedEvents })
 })
 
@@ -38,15 +33,7 @@ eventRouter.post("/event", (request, response) => {
     return
   }
 
-  let votes = [] //Empty array for vote objects
-  for (let i = 0; i < dates.length; i++) {
-    const initializedVote = {
-      date: dates[i],
-      people: [],
-    }
-    votes.push(initializedVote)
-  }
-
+  const votes = dates.map((date) => ({ date, people: [] }))
   const id = generateId()
   db.get("events")
     .push({
@@ -97,7 +84,7 @@ eventRouter.get("/event/:id/results", (request, response) => {
   const { votes, name } = db.get("events").find({ id }).value()
   let uniqueVoters = []
   let suitableDates = []
-  if (votes.length > 0) {
+  if (votes.length) {
     uniqueVoters = getUniqueVoters(votes)
     for (let i = 0; i < votes.length; i++) {
       //comparing element wise might be faster than using stringify
@@ -121,7 +108,7 @@ eventRouter.get("/event/:id/results", (request, response) => {
 const getUniqueVoters = (votes) => {
   let allVotes = []
   for (let date of votes) {
-    allVotes = allVotes.concat(date.people)
+    allVotes.push(...date.people)
   }
   return allVotes.filter(unique)
 }
@@ -135,14 +122,14 @@ const generateId = () => {
   const ids = events.map((event) => event.id)
   let newId
   for (let i = 0; i <= ids.length; i++) {
-    if (!ids.includes(i.toString())) {
+    if (!ids.includes(i)) {
       newId = i
     }
     if ((i = ids.length)) {
       newId = i
     }
   }
-  return newId.toString()
+  return newId
 }
 
 const nameTaken = (name) => {
@@ -159,7 +146,7 @@ const idExists = (id) => {
     .get("events")
     .value()
     .map((event) => event.id)
-  if (ids.includes(id.toString())) {
+  if (ids.includes(id)) {
     logger.info("Event found")
     return true
   }
