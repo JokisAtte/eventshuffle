@@ -10,15 +10,24 @@ const db = low(adapter)
 
 eventRouter.get("/event/list", (request, response) => {
   const events = db.get("events").value()
-  events.map((event) => {
-    delete event.votes
-    delete event.dates
-  })
-  response.json({ events })
+  let simplifiedEvents = []
+  for (let i = 0; i < events.length; i++) {
+    const { id, name } = events[i]
+    const event = {
+      id,
+      name,
+    }
+    simplifiedEvents.push(event)
+  }
+  response.json({ events: simplifiedEvents })
 })
 
 eventRouter.get("/event/:id", (request, response) => {
   const { id } = request.params
+  if (!idExists(id)) {
+    response.status(404).send("Event id not found")
+    return
+  }
   response.json(db.get("events").find({ id }).value())
 })
 
@@ -29,7 +38,7 @@ eventRouter.post("/event", (request, response) => {
     return
   }
 
-  let votes = []
+  let votes = [] //Empty array for vote objects
   for (let i = 0; i < dates.length; i++) {
     const initializedVote = {
       date: dates[i],
@@ -71,7 +80,8 @@ eventRouter.post("/event/:id/vote", (request, response) => {
       logger.error(`User ${name} already voted for ${event.votes[i].date} `)
     }
   }
-  //Deleting and then writing might not be the best practice, but others didnt work
+  //Deleting and then writing might not be the best practice performance wise,
+  //but others didnt work
   db.get("events").remove({ id }).write()
   db.get("events").push(event).write()
   response.json(event)
@@ -79,16 +89,27 @@ eventRouter.post("/event/:id/vote", (request, response) => {
 
 eventRouter.get("/event/:id/results", (request, response) => {
   const { id } = request.params
+  if (!idExists(id)) {
+    response.status(404).send("Event id not found")
+    return
+  }
+
   const { votes, name } = db.get("events").find({ id }).value()
-  const uniqueVoters = getUniqueVoters(votes)
+  let uniqueVoters = []
   let suitableDates = []
-  for (let i = 0; i < votes.length; i++) {
-    //comparing element wise might be faster
-    console.log(JSON.stringify(votes[i].people) == JSON.stringify(uniqueVoters))
-    if (JSON.stringify(votes[i].people) == JSON.stringify(uniqueVoters)) {
-      suitableDates = suitableDates.concat(votes[i])
+  if (votes.length > 0) {
+    uniqueVoters = getUniqueVoters(votes)
+    for (let i = 0; i < votes.length; i++) {
+      //comparing element wise might be faster than using stringify
+      console.log(
+        JSON.stringify(votes[i].people) == JSON.stringify(uniqueVoters)
+      )
+      if (JSON.stringify(votes[i].people) == JSON.stringify(uniqueVoters)) {
+        suitableDates = suitableDates.concat(votes[i])
+      }
     }
   }
+
   const result = {
     id,
     name,

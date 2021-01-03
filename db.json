@@ -2,162 +2,110 @@
   "events": [
     {
       "id": "0",
-      "name": "Jake's secret party",
+      "name": "Olutmaistelu",
       "dates": [
-        "2014-01-01",
-        "2014-01-05",
-        "2014-01-12"
+        "2021-03-15",
+        "2021-03-14",
+        "2021-03-16"
       ],
       "votes": [
         {
-          "date": "2014-01-01",
+          "date": "2021-03-15",
           "people": [
-            "John",
-            "Julia",
-            "Paul",
-            "Daisy"
+            "Hermmani",
+            "Marakatti",
+            "Niilo"
           ]
         },
         {
-          "date": "2014-01-05",
+          "date": "2021-03-14",
           "people": [
-            "John"
+            "Marakatti"
+          ]
+        },
+        {
+          "date": "2021-03-16",
+          "people": [
+            "Niilo"
           ]
         }
       ]
     },
     {
       "id": "2",
-      "name": "perse",
+      "name": "Bileet",
       "dates": [
-        "2020-10-11",
-        "2020-11-11",
-        "2020-01-12"
+        "2021-03-15",
+        "2021-03-14",
+        "2021-03-16"
       ],
       "votes": [
         {
-          "date": "2020-10-11",
+          "date": "2021-03-15",
           "people": []
         },
         {
-          "date": "2020-11-11",
+          "date": "2021-03-14",
           "people": []
         },
         {
-          "date": "2020-01-12",
+          "date": "2021-03-16",
           "people": []
         }
       ]
     },
     {
       "id": "1",
-      "name": "paska keittopäivät",
+      "name": "Lanit",
       "dates": [
-        "2020-10-11",
-        "2020-11-11",
-        "2020-01-12"
+        "2021-03-15",
+        "2021-03-14",
+        "2021-03-16"
       ],
       "votes": [
         {
-          "date": "2020-10-11",
+          "date": "2021-03-15",
           "people": [
-            "Daisy",
-            "John",
-            "Dick Richard"
+            "Niilo",
+            "martti"
           ]
         },
         {
-          "date": "2020-11-11",
+          "date": "2021-03-14",
           "people": [
-            "Dick Richard"
+            "martti",
+            "Niilo"
           ]
         },
         {
-          "date": "2020-01-12",
+          "date": "2021-03-16",
           "people": []
         }
       ]
     },
     {
       "id": "3",
-      "name": "perse2",
+      "name": "Bileet2",
       "dates": [
-        "2020-10-11",
-        "2020-11-11",
-        "2020-01-12"
+        "2021-03-15",
+        "2021-03-14",
+        "2021-03-16"
       ],
       "votes": [
         {
-          "date": "2020-10-11",
+          "date": "2021-03-15",
           "people": [
-            "Dick Richard",
-            "Paskapää",
-            "Marx",
-            "Karl"
-          ]
-        },
-        {
-          "date": "2020-11-11",
-          "people": [
-            "Dick Richard",
-            "Paskapää",
-            "Marx",
-            "Karl"
-          ]
-        },
-        {
-          "date": "2020-01-12",
-          "people": []
-        }
-      ]
-    },
-    {
-      "id": "4",
-      "name": "perse3",
-      "dates": [
-        "2020-10-11",
-        "2020-11-11",
-        "2020-01-12"
-      ],
-      "votes": [
-        {
-          "date": "2020-10-11",
-          "people": []
-        },
-        {
-          "date": "2020-11-11",
-          "people": []
-        },
-        {
-          "date": "2020-01-12",
-          "people": []
-        }
-      ]
-    },
-    {
-      "id": "5",
-      "name": "Lommin boolimaistelu",
-      "dates": [
-        "2020-10-11",
-        "2020-11-11",
-        "2020-01-12"
-      ],
-      "votes": [
-        {
-          "date": "2020-10-11",
-          "people": [
-            "Atte",
             "Niilo"
           ]
         },
         {
-          "date": "2020-11-11",
+          "date": "2021-03-14",
           "people": [
-            "Atte"
+            "Niilo"
           ]
         },
         {
-          "date": "2020-01-12",
+          "date": "2021-03-16",
           "people": []
         }
       ]
