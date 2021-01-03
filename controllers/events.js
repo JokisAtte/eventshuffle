@@ -1,4 +1,3 @@
-const { response } = require("express")
 const low = require("lowdb")
 const Filesync = require("lowdb/adapters/FileSync")
 const eventRouter = require("express").Router()
@@ -89,9 +88,6 @@ eventRouter.get("/event/:id/results", (request, response) => {
     uniqueVoters = getUniqueVoters(votes)
     for (let i = 0; i < votes.length; i++) {
       //comparing element wise might be faster than using stringify
-      console.log(
-        JSON.stringify(votes[i].people) == JSON.stringify(uniqueVoters)
-      )
       if (JSON.stringify(votes[i].people) == JSON.stringify(uniqueVoters)) {
         suitableDates = suitableDates.concat(votes[i])
       }
