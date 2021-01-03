@@ -2,7 +2,7 @@ POST http://localhost:3001/api/v1/event/
 Content-Type: application/json
 
 {
-    "name":"Olutmaistelu",
+    "name":"Olutmaistelu2",
     "dates": [
         "2021-03-15",
         "2021-03-14",

@@ -1,9 +1,10 @@
 const { response } = require("express")
 const low = require("lowdb")
 const Filesync = require("lowdb/adapters/FileSync")
-const { map } = require("../app")
 const eventRouter = require("express").Router()
-const logger = require("../utils/logger")
+
+const { nameTaken, idTaken } = require("../utils/validators/index")
+const { generateId, logger, getUniqueVoters } = require("../utils/index")
 
 const adapter = new Filesync("db.json")
 const db = low(adapter)
@@ -19,7 +20,7 @@ eventRouter.get("/event/list", (request, response) => {
 
 eventRouter.get("/event/:id", (request, response) => {
   const { id } = request.params
-  if (!idExists(id)) {
+  if (!idTaken(id)) {
     response.status(404).send("Event id not found")
     return
   }
@@ -48,17 +49,17 @@ eventRouter.post("/event", (request, response) => {
 
 eventRouter.post("/event/:id/vote", (request, response) => {
   const { id } = request.params
-  if (!idExists(id)) {
+  if (!idTaken(id)) {
     response.status(404).send("Event id not found")
     return
   }
 
-  const { name, votes } = request.body
+  const { name, votes: newVotes } = request.body
   const event = db.get("events").find({ id }).value()
 
   for (let i = 0; i < event.votes.length; i++) {
     if (
-      votes.includes(event.votes[i].date) &&
+      newVotes.includes(event.votes[i].date) &&
       !event.votes[i].people.includes(name)
     ) {
       event.votes[i].people.push(name)
@@ -76,7 +77,7 @@ eventRouter.post("/event/:id/vote", (request, response) => {
 
 eventRouter.get("/event/:id/results", (request, response) => {
   const { id } = request.params
-  if (!idExists(id)) {
+  if (!idTaken(id)) {
     response.status(404).send("Event id not found")
     return
   }
@@ -104,53 +105,5 @@ eventRouter.get("/event/:id/results", (request, response) => {
   }
   response.json(result)
 })
-
-const getUniqueVoters = (votes) => {
-  let allVotes = []
-  for (let date of votes) {
-    allVotes.push(...date.people)
-  }
-  return allVotes.filter(unique)
-}
-
-const unique = (value, index, self) => {
-  return self.indexOf(value) === index
-}
-
-const generateId = () => {
-  const events = db.get("events").value()
-  const ids = events.map((event) => event.id)
-  let newId
-  for (let i = 0; i <= ids.length; i++) {
-    if (!ids.includes(i)) {
-      newId = i
-    }
-    if ((i = ids.length)) {
-      newId = i
-    }
-  }
-  return newId
-}
-
-const nameTaken = (name) => {
-  const events = db.get("events").value()
-  const names = events.map((event) => event.name)
-  if (names.includes(name)) {
-    return true
-  }
-  return false
-}
-
-const idExists = (id) => {
-  const ids = db
-    .get("events")
-    .value()
-    .map((event) => event.id)
-  if (ids.includes(id)) {
-    logger.info("Event found")
-    return true
-  }
-  return false
-}
 
 module.exports = eventRouter
