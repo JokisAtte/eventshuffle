@@ -1,6 +1,7 @@
 # Eventshuffle
 Eventshuffle is an application to help scheduling events with friends.
 An event is created by posting a name and suitable dates to the backend, events can be queried from the backend and participants can submit dates suitable for them.
+Results of suitable dates can be queried.
 
 # Running Eventshuffle
 To run the backend clone the repository and run these commands in command promt:
