@@ -2,7 +2,7 @@ POST http://localhost:3001/api/v1/event/
 Content-Type: application/json
 
 {
-    "name":"perse",
+    "name":"Lommin boolimaistelu",
     "dates": [
         "2020-10-11",
         "2020-11-11",

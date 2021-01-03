@@ -10,36 +10,35 @@ const db = low(adapter)
 
 eventRouter.get("/event/list", (request, response) => {
   const events = db.get("events").value()
-  response.json(events)
+  events.map((event) => {
+    delete event.votes
+    delete event.dates
+  })
+  response.json({ events })
 })
 
 eventRouter.get("/event/:id", (request, response) => {
   const { id } = request.params
-  const event = db.get("events").find({ id: id }).value()
-  response.json(event)
+  response.json(db.get("events").find({ id }).value())
 })
 
 eventRouter.post("/event", (request, response) => {
-  const { body } = request
-
-  if (nameTaken(body.name)) {
+  const { name, dates } = request.body
+  if (nameTaken(name)) {
     response.status(400).send("Error: Event name already in use")
     return
   }
 
   let votes = []
-  for (let i = 0; i < body.dates.length; i++) {
-    console.log("date:", body.dates[i])
-    const newVote = {
-      date: body.dates[i],
+  for (let i = 0; i < dates.length; i++) {
+    const initializedVote = {
+      date: dates[i],
       people: [],
     }
-    console.log(newVote)
-    votes.push(newVote)
+    votes.push(initializedVote)
   }
 
   const id = generateId()
-  const { name, dates } = body
   db.get("events")
     .push({
       id,
@@ -48,7 +47,7 @@ eventRouter.post("/event", (request, response) => {
       votes,
     })
     .write()
-  response.status(201).json({ id: id })
+  response.status(201).json({ id })
 })
 
 eventRouter.post("/event/:id/vote", (request, response) => {
@@ -67,11 +66,12 @@ eventRouter.post("/event/:id/vote", (request, response) => {
       !event.votes[i].people.includes(name)
     ) {
       event.votes[i].people.push(name)
-      logger.info("Vote added")
+      logger.info(`Vote for ${event.votes[i].date} by ${name} added`)
     } else if (event.votes[i].people.includes(name)) {
-      logger.error("User already voted this date")
+      logger.error(`User ${name} already voted for ${event.votes[i].date} `)
     }
   }
+  //Deleting and then writing might not be the best practice, but others didnt work
   db.get("events").remove({ id }).write()
   db.get("events").push(event).write()
   response.json(event)
@@ -80,20 +80,15 @@ eventRouter.post("/event/:id/vote", (request, response) => {
 eventRouter.get("/event/:id/results", (request, response) => {
   const { id } = request.params
   const { votes, name } = db.get("events").find({ id }).value()
-  console.log(votes)
   const uniqueVoters = getUniqueVoters(votes)
-  console.log("----")
-  console.log(votes[0].people)
-  console.log(uniqueVoters)
-  console.log("----")
   let suitableDates = []
   for (let i = 0; i < votes.length; i++) {
+    //comparing element wise might be faster
     console.log(JSON.stringify(votes[i].people) == JSON.stringify(uniqueVoters))
     if (JSON.stringify(votes[i].people) == JSON.stringify(uniqueVoters)) {
       suitableDates = suitableDates.concat(votes[i])
     }
   }
-  console.log(suitableDates)
   const result = {
     id,
     name,
