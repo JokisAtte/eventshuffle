@@ -1,20 +1,24 @@
 const low = require("lowdb")
 const Filesync = require("lowdb/adapters/FileSync")
+const adapter = new Filesync("db.json")
+const db = low(adapter)
+
+const Event = require("../models/event")
+
 const eventRouter = require("express").Router()
 
 const { nameTaken, idTaken } = require("../utils/validators/index")
 const { generateId, logger, getUniqueVoters } = require("../utils/index")
-
-const adapter = new Filesync("db.json")
-const db = low(adapter)
+const mongoose = require("mongoose")
 
 eventRouter.get("/event/list", (request, response) => {
-  const events = db.get("events").value()
-  const simplifiedEvents = events.map(({ id, name }) => ({
-    id,
-    name,
-  }))
-  response.json({ events: simplifiedEvents })
+  Event.find({}).then((events) => {
+    events = events.map(({ id, name }) => ({
+      id,
+      name,
+    }))
+    response.json({ events })
+  })
 })
 
 eventRouter.get("/event/:id", (request, response) => {
@@ -26,23 +30,18 @@ eventRouter.get("/event/:id", (request, response) => {
   response.json(db.get("events").find({ id }).value())
 })
 
-eventRouter.post("/event", (request, response) => {
+eventRouter.post("/event", async (request, response) => {
   const { name, dates } = request.body
-  if (nameTaken(name)) {
-    response.status(400).send("Error: Event name already in use")
-    return
-  }
 
   const votes = dates.map((date) => ({ date, people: [] }))
   const id = generateId()
-  db.get("events")
-    .push({
-      id,
-      name,
-      dates,
-      votes,
-    })
-    .write()
+  const event = new Event({
+    id,
+    name,
+    dates,
+    votes,
+  })
+  await event.save()
   response.status(201).json({ id })
 })
 
