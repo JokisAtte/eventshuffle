@@ -1,21 +1,13 @@
-const low = require("lowdb")
-const Filesync = require("lowdb/adapters/FileSync")
-const adapter = new Filesync("db.json")
-const db = low(adapter)
-
 const Event = require("../models/event")
 
 const eventRouter = require("express").Router()
 
-const { nameTaken, idTaken } = require("../utils/validators/index")
 const {
   generateId,
   logger,
   getUniqueVoters,
   arraysEqual,
 } = require("../utils/index")
-const mongoose = require("mongoose")
-const { update } = require("../models/event")
 
 eventRouter.get("/event/list", (request, response) => {
   Event.find({}).then((events) => {
@@ -29,7 +21,7 @@ eventRouter.get("/event/list", (request, response) => {
 
 eventRouter.get("/event/:id", async (request, response) => {
   const { id } = request.params
-  const event = await Event.find({ id: parseInt(id) })
+  const event = await Event.find({ id })
   if (event) {
     response.json(event)
   } else {
@@ -56,7 +48,7 @@ eventRouter.post("/event/:id/vote", async (request, response) => {
   const { name: voterName, votes: newVotes } = request.body
 
   let event = await Event.find({
-    id: parseInt(id),
+    id,
   }) //returns a list, take event [0]
   event = event[0]
   const { name, dates, votes } = event
@@ -88,7 +80,7 @@ eventRouter.get("/event/:id/results", async (request, response) => {
   const { id } = request.params
 
   let event = await Event.find({
-    id: parseInt(id),
+    id,
   }) //returns a list, take event [0]
   const { votes, name } = event[0]
 
@@ -99,7 +91,6 @@ eventRouter.get("/event/:id/results", async (request, response) => {
     uniqueVoters = getUniqueVoters(votes)
     for (let i = 0; i < votes.length; i++) {
       if (arraysEqual(votes[i].people, uniqueVoters)) {
-        console.log(votes[i])
         suitableDates.push(votes[i])
       }
     }

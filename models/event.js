@@ -9,6 +9,7 @@ const eventSchema = mongoose.Schema({
 
 eventSchema.set("toJSON", {
   transform: (document, returnedObject) => {
+    returnedObject.id = parseInt(returnedObject.id)
     delete returnedObject._id
     delete returnedObject.__v
   },
