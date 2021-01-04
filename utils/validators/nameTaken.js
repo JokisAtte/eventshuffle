@@ -1,10 +1,8 @@
-const low = require("lowdb")
-const Filesync = require("lowdb/adapters/FileSync")
-const adapter = new Filesync("db.json")
-const db = low(adapter)
+const Event = require("../../models/event")
 
 const nameTaken = (name) => {
-  const event = db.get("events").find({ name }).value()
+  const event = Event.find({ name })
+  console.log(event)
   if (event) {
     return true
   }

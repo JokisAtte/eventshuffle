@@ -1,9 +1,9 @@
-POST http://localhost:3001/api/v1/event/5/vote
+POST http://localhost:3001/api/v1/event/33/vote
 Content-Type: application/json
 
 {
-  "name": "Niilo",
+  "name": "Marko4",
   "votes": [
-    "2020-10-11"
+    "2021-03-14"
   ]
 }

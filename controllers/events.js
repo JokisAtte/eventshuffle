@@ -8,8 +8,14 @@ const Event = require("../models/event")
 const eventRouter = require("express").Router()
 
 const { nameTaken, idTaken } = require("../utils/validators/index")
-const { generateId, logger, getUniqueVoters } = require("../utils/index")
+const {
+  generateId,
+  logger,
+  getUniqueVoters,
+  arraysEqual,
+} = require("../utils/index")
 const mongoose = require("mongoose")
+const { update } = require("../models/event")
 
 eventRouter.get("/event/list", (request, response) => {
   Event.find({}).then((events) => {
@@ -21,18 +27,18 @@ eventRouter.get("/event/list", (request, response) => {
   })
 })
 
-eventRouter.get("/event/:id", (request, response) => {
+eventRouter.get("/event/:id", async (request, response) => {
   const { id } = request.params
-  if (!idTaken(id)) {
-    response.status(404).send("Event id not found")
-    return
+  const event = await Event.find({ id: parseInt(id) })
+  if (event) {
+    response.json(event)
+  } else {
+    response.status(404).end()
   }
-  response.json(db.get("events").find({ id }).value())
 })
 
 eventRouter.post("/event", async (request, response) => {
   const { name, dates } = request.body
-
   const votes = dates.map((date) => ({ date, people: [] }))
   const id = generateId()
   const event = new Event({
@@ -45,50 +51,56 @@ eventRouter.post("/event", async (request, response) => {
   response.status(201).json({ id })
 })
 
-eventRouter.post("/event/:id/vote", (request, response) => {
+eventRouter.post("/event/:id/vote", async (request, response) => {
   const { id } = request.params
-  if (!idTaken(id)) {
-    response.status(404).send("Event id not found")
-    return
-  }
+  const { name: voterName, votes: newVotes } = request.body
 
-  const { name, votes: newVotes } = request.body
-  const event = db.get("events").find({ id }).value()
+  let event = await Event.find({
+    id: parseInt(id),
+  }) //returns a list, take event [0]
+  event = event[0]
+  const { name, dates, votes } = event
 
-  for (let i = 0; i < event.votes.length; i++) {
+  for (let i = 0; i < votes.length; i++) {
     if (
-      newVotes.includes(event.votes[i].date) &&
-      !event.votes[i].people.includes(name)
+      newVotes.includes(votes[i].date) &&
+      !votes[i].people.includes(voterName)
     ) {
-      event.votes[i].people.push(name)
-      logger.info(`Vote for ${event.votes[i].date} by ${name} added`)
-    } else if (event.votes[i].people.includes(name)) {
-      logger.error(`User ${name} already voted for ${event.votes[i].date} `)
+      votes[i].people.push(voterName)
+      logger.info(`Vote for ${votes[i].date} by ${voterName} added`)
     }
   }
-  //Deleting and then writing might not be the best practice performance wise,
-  //but others didnt work
-  db.get("events").remove({ id }).write()
-  db.get("events").push(event).write()
-  response.json(event)
+
+  const newEvent = new Event({
+    id,
+    name,
+    dates,
+    votes: event.votes,
+  })
+
+  //Could use Event.findOneAndUpdate instead of delete and then save
+  await Event.findOneAndDelete({ id })
+  await newEvent.save()
+  response.json(newEvent)
 })
 
-eventRouter.get("/event/:id/results", (request, response) => {
+eventRouter.get("/event/:id/results", async (request, response) => {
   const { id } = request.params
-  if (!idTaken(id)) {
-    response.status(404).send("Event id not found")
-    return
-  }
 
-  const { votes, name } = db.get("events").find({ id }).value()
+  let event = await Event.find({
+    id: parseInt(id),
+  }) //returns a list, take event [0]
+  const { votes, name } = event[0]
+
   let uniqueVoters = []
   let suitableDates = []
+
   if (votes.length) {
     uniqueVoters = getUniqueVoters(votes)
     for (let i = 0; i < votes.length; i++) {
-      //comparing element wise might be faster than using stringify
-      if (JSON.stringify(votes[i].people) == JSON.stringify(uniqueVoters)) {
-        suitableDates = suitableDates.concat(votes[i])
+      if (arraysEqual(votes[i].people, uniqueVoters)) {
+        console.log(votes[i])
+        suitableDates.push(votes[i])
       }
     }
   }
@@ -98,6 +110,7 @@ eventRouter.get("/event/:id/results", (request, response) => {
     name,
     suitableDates,
   }
+
   response.json(result)
 })
 
