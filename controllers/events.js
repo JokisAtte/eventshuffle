@@ -40,7 +40,7 @@ eventRouter.post("/event", async (request, response) => {
     votes,
   })
   await event.save()
-  response.status(201).json({ id })
+  response.json({ id })
 })
 
 eventRouter.post("/event/:id/vote", async (request, response) => {
@@ -51,7 +51,7 @@ eventRouter.post("/event/:id/vote", async (request, response) => {
     id,
   }) //returns a list, take event [0]
   event = event[0]
-  const { name, dates, votes } = event
+  const { votes } = event
 
   for (let i = 0; i < votes.length; i++) {
     if (
@@ -63,17 +63,8 @@ eventRouter.post("/event/:id/vote", async (request, response) => {
     }
   }
 
-  const newEvent = new Event({
-    id,
-    name,
-    dates,
-    votes: event.votes,
-  })
-
-  //Could use Event.findOneAndUpdate instead of delete and then save
-  await Event.findOneAndDelete({ id })
-  await newEvent.save()
-  response.json(newEvent)
+  await event.save()
+  response.json(event)
 })
 
 eventRouter.get("/event/:id/results", async (request, response) => {
