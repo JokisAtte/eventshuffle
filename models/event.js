@@ -1,10 +1,11 @@
 const mongoose = require("mongoose")
+const voteSchema = require("./vote")
 
 const eventSchema = mongoose.Schema({
   id: Number,
   name: String,
   dates: Array,
-  votes: Array,
+  votes: [voteSchema],
 })
 
 eventSchema.set("toJSON", {

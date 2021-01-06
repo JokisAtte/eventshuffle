@@ -1,6 +1,5 @@
-const Event = require("../models/event")
-
 const eventRouter = require("express").Router()
+
 const { getAllEvents } = require("./api/getAllEvents")
 const { getAnEvent } = require("./api/getAnEvent")
 const { postNewEvent } = require("./api/postNewEvent")

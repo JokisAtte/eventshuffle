@@ -1,4 +1,5 @@
 const Event = require("../../models/event")
+const { getUniqueVoters, arraysEqual } = require("../../utils/index")
 
 const getResult = async (request, response) => {
   const { id } = request.params
