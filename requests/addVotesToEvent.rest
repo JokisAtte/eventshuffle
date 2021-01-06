@@ -1,11 +1,10 @@
-POST http://localhost:3001/api/v1/event/87/vote
+POST http://localhost:3001/api/v1/event/7/vote
 Content-Type: application/json
 
 {
-  "name": "Marko",
+  "name": "Jukka",
   "votes": [
     "2021-03-66",
-      "2021-03-14",
-      "2021-03-16"
+      "2021-03-14"
   ]
 }

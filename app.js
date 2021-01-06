@@ -26,7 +26,7 @@ app.use(cors())
 app.use(express.static("build"))
 
 app.use(middleware.requestLogger)
-app.use("/api/v1", eventsRouter)
+app.use("/api/v1/event", eventsRouter)
 app.use(middleware.unknownEndpoint)
 
 module.exports = app
