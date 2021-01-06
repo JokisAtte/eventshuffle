@@ -1,3 +1,7 @@
+/**
+ *
+ * @param {array} votes Array containing vote objects
+ */
 const getUniqueVoters = (votes) => {
   let allVotes = []
   for (let date of votes) {

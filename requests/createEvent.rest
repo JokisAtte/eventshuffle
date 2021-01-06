@@ -2,10 +2,6 @@ POST http://localhost:3001/api/v1/event/
 Content-Type: application/json
 
 {
-    "name":"piknik2",
-    "dates": [
-        "2021-03-66",
-        "2021-03-14",
-        "2021-03-16"
-    ]
+    "name":"hiihtokisat",
+    "dates": []
 }
