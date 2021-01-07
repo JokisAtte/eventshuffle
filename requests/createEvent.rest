@@ -2,6 +2,9 @@ POST http://localhost:3001/api/v1/event/
 Content-Type: application/json
 
 {
-    "name":"hiihtokisat",
-    "dates": []
+    "name":"pikkujoulut",
+    "dates": [
+    "2021-03-66",
+    "2021-03-14"
+  ]
 }
