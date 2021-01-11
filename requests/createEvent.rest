@@ -2,10 +2,9 @@ POST http://localhost:3001/api/v1/event/
 Content-Type: application/json
 
 {
-    "name":"Lanit",
+    "name":"123123",
     "dates": [
-        "2021-03-66",
-        "2021-03-14",
-        "2021-03-16"
-    ]
+    "2021-03-66",
+    "2021-03-14"
+  ]
 }

@@ -1,3 +1,8 @@
+/**
+ *
+ * @param {array} a any array
+ * @param {array} b any array
+ */
 function arraysEqual(a, b) {
   if (a === b) return true
   if (a == null || b == null) return false

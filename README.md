@@ -69,7 +69,7 @@ Endpoint: ```/api/v1/event/{id}```
 Request
 Method: ```GET```
 
-Parameters: ```id, long```
+Parameters: ```id (int)```
 
 Response
 Body:
@@ -101,7 +101,7 @@ Endpoint: ```/api/v1/event/{id}/vote```
 Request
 Method: ```POST```
 
-Parameters: ```id, long```
+Parameters: ```id (int)```
 
 Body:
 ```
@@ -148,7 +148,7 @@ Endpoint: ```/api/v1/event/{id}/results``` Responds with dates that are suitable
 Request
 Method: ```GET```
 
-Parameters: ```id, long```
+Parameters: ```id (int)```
 
 Response
 ```

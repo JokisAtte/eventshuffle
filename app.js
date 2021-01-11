@@ -1,18 +1,19 @@
+require("dotenv").config()
 const express = require("express")
 const app = express()
 const cors = require("cors")
-const middleware = require("./utils/middleware.js")
-const eventsRouter = require("./controllers/events")
-const logger = require("./utils/logger")
-
 const mongoose = require("mongoose")
 
-//This is far from good practice
-mongodb_uri =
-  "mongodb+srv://Atte:OttakaaToihinFuturice@eventsuffle.ynqqq.mongodb.net/eventsuffle?retryWrites=true&w=majority"
+const eventsRouter = require("./controllers/events")
 
+const { middleware, logger } = require("./utils/index")
+const { MONGODB_URI, PORT } = require("./utils/config")
+console.log(MONGODB_URI, PORT)
 mongoose
-  .connect(mongodb_uri, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(() => {
     logger.info("connected to MongoDB")
   })
@@ -24,9 +25,8 @@ app.use(express.json())
 app.use(cors())
 app.use(express.static("build"))
 
-app.use("/api/v1", eventsRouter)
-
 app.use(middleware.requestLogger)
+app.use("/api/v1/event", eventsRouter)
 app.use(middleware.unknownEndpoint)
 
 module.exports = app
