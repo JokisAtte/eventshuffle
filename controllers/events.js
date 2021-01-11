@@ -21,7 +21,8 @@ eventRouter.get("/event/list", (request, response) => {
 
 eventRouter.get("/event/:id", async (request, response) => {
   const { id } = request.params
-  const event = await Event.find({ id })
+  let event = await Event.find({ id })
+  event = event[0]
   if (event) {
     response.json(event)
   } else {
