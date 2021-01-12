@@ -14,6 +14,7 @@ const eventSchema = mongoose.Schema({
     required: true,
   },
   votes: [voteSchema],
+  voteOpen: Boolean,
 })
 
 eventSchema.set("toJSON", {

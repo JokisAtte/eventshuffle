@@ -1,8 +1,8 @@
 const mongoose = require("mongoose")
 
 const voteSchema = mongoose.Schema({
-  date: String,
-  people: Array,
+  date: [Date],
+  people: [String],
 })
 
 voteSchema.set("toJSON", {

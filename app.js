@@ -3,6 +3,7 @@ const express = require("express")
 const app = express()
 const cors = require("cors")
 const mongoose = require("mongoose")
+require("express-async-errors")
 
 const eventsRouter = require("./controllers/events")
 
