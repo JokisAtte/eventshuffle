@@ -1,5 +1,4 @@
 const Event = require("../../models/event")
-const { getUniqueVoters, arraysEqual } = require("../../utils/index")
 const _ = require("lodash")
 
 const getResult = async (request, response) => {
