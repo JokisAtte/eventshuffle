@@ -9,7 +9,6 @@ const eventsRouter = require("./controllers/events")
 
 const { middleware, logger } = require("./utils/index")
 const { MONGODB_URI, PORT } = require("./utils/config")
-console.log(MONGODB_URI, PORT)
 mongoose
   .connect(MONGODB_URI, {
     useNewUrlParser: true,

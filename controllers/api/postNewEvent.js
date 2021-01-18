@@ -11,8 +11,13 @@ const postNewEvent = async (request, response) => {
     dates,
     votes,
   })
-  await event.save()
-  response.json({ id })
+
+  try {
+    await event.save()
+    response.json({ id })
+  } catch (error) {
+    response.send(500)
+  }
 }
 
 module.exports = { postNewEvent }
