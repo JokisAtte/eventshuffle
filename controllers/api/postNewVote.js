@@ -5,6 +5,7 @@ const postNewVote = async (request, response) => {
   const { name: voterName, votes: newVotes } = request.body
 
   const event = Event.find({ id })
+  console.log(event)
   //const event = events[0] //returns a list of one event, destruct event
   const { votes } = event
 

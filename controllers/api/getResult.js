@@ -1,5 +1,6 @@
 const Event = require("../../models/event")
 const { getUniqueVoters, arraysEqual } = require("../../utils/index")
+const _ = require("lodash")
 
 const getResult = async (request, response) => {
   const { id } = request.params
@@ -13,9 +14,9 @@ const getResult = async (request, response) => {
     let suitableDates = []
 
     if (votes.length) {
-      uniqueVoters = getUniqueVoters(votes)
+      uniqueVoters = _.sortedUniq(votes)
       for (let i = 0; i < votes.length; i++) {
-        if (arraysEqual(votes[i].people, uniqueVoters)) {
+        if (_.isEqual(votes[i].people, uniqueVoters)) {
           suitableDates.push(votes[i])
         }
       }
